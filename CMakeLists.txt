@@ -1,21 +1,16 @@
-#
 # 86Box    A hypervisor and IBM PC system emulator that specializes in
-#          running old operating systems and software designed for IBM
-#          PC systems and compatibles from 1981 through fairly recent
-#          system designs based on the PCI bus.
+# running old operating systems and software designed for IBM
+# PC systems and compatibles from 1981 through fairly recent
+# system designs based on the PCI bus.
 #
-#          This file is part of the 86Box distribution.
-#
-#          CMake build script.
+# This file is part of the 86Box distribution.
+# CMake build script.
 #
 # Authors: David Hrdlička, <hrdlickadavid@outlook.com>
-#
-#          Copyright 2020-2021 David Hrdlička.
-#          Copyright 2021-2024 Jasmine Iwanek.
-#
+# Copyright 2020-2021 David Hrdlička.
+# Copyright 2021-2024 Jasmine Iwanek.
 
 cmake_minimum_required(VERSION 3.16)
-
 cmake_policy(SET CMP0091 NEW)
 cmake_policy(SET CMP0079 NEW)
 
@@ -62,7 +57,6 @@ if(VCPKG_TOOLCHAIN)
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
         set(STATIC_BUILD OFF)
     endif()
-
     # `vcpkg.json` defaults to Qt6
     set(USE_QT6 ON)
 endif()
@@ -70,7 +64,6 @@ endif()
 if(WIN32)
     # Prefer static builds on Windows
     set(PREFER_STATIC ON)
-
     # Default value for the `WIN32` target property, which specifies whether
     # to build the application for the Windows GUI or console subsystem
     option(CMAKE_WIN32_EXECUTABLE "Build a Windows GUI executable" ON)
@@ -105,10 +98,8 @@ add_compile_definitions("$<$<CONFIG:Debug>:DEBUG>")
 if(WIN32)
     # Disables *_s function warnings
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-
     # Disables POSIX name warnings
     add_compile_definitions(_CRT_NONSTDC_NO_WARNINGS)
-
     # Disables WinSock deprecation warnings
     add_compile_definitions(_WINSOCK_DEPRECATED_NO_WARNINGS)
 endif()
@@ -122,9 +113,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG ON)
 
 # Optional features
-#
-#      Option       Description                                                  Def.
-#      ------       -----------                                                  ----
+# Option       Description                                                  Def.
+# ------       -----------                                                  ----
 option(RELEASE      "Release build"                                              OFF)
 option(DYNAREC      "Dynamic recompiler"                                         ON)
 option(OPENAL       "OpenAL"                                                     ON)
@@ -137,13 +127,15 @@ option(MINITRACE    "Enable Chrome tracing using the modified minitrace library"
 option(GDBSTUB      "Enable GDB stub server for debugging"                       OFF)
 option(DEV_BRANCH   "Development branch"                                         OFF)
 option(DISCORD      "Discord Rich Presence support"                              ON)
-option(DEBUGREGS486 "Enable debug register opeartion on 486+ CPUs"               OFF)
+option(DEBUGREGS486 "Enable debug register operation on 486+ CPUs"               OFF)
 
 if(WIN32)
-    set(QT ON)
+    # Disabled Qt
+    set(QT OFF)
     option(CPPTHREADS "C++11 threads" OFF)
 else()
-    option(QT "Qt GUI" ON)
+    # Disabled Qt
+    option(QT "Qt GUI" OFF)
     option(CPPTHREADS "C++11 threads" ON)
 endif()
 
@@ -152,26 +144,25 @@ if(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
 endif()
 
 # Development branch features
-#
-#                      Option         Description                                Def.  Condition     Otherwise
-#                      ------         -----------                                ----  ------------  ---------
-cmake_dependent_option(AMD_K5         "AMD K5"                                   ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(AN430TX        "Intel AN430TX"                            ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(CDROM_MITSUMI  "Mitsumi CDROM"                            ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(CYRIX_6X86     "Cyrix 6x86"                               ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(G100           "Matrox Productiva G100"                   ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(GUSMAX         "Gravis UltraSound MAX"                    ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(ISAMEM_RAMPAGE "AST Rampage"                              ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(ISAMEM_IAB     "Intel Above Board"                        ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(ISAMEM_BRAT    "BocaRAM/AT"                               ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(LASERXT        "VTech Laser XT"                           ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(OLIVETTI       "Olivetti M290"                            ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(OPEN_AT        "OpenAT"                                   ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(OPL4ML         "OPL4-ML daughterboard"                    ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(PCL            "Generic PCL5e Printer"                    ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(SIO_DETECT     "Super I/O Detection Helper"               ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(WACOM          "Wacom Input Devices"                      ON    "DEV_BRANCH"  OFF)
-cmake_dependent_option(XL24           "ATI VGA Wonder XL24 (ATI-28800-6)"        ON    "DEV_BRANCH"  OFF)
+# Option         Description                                  Def.  Condition     Otherwise
+# ------         -----------                                  ----  ------------  ---------
+cmake_dependent_option(AMD_K5         "AMD K5"                       ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(AN430TX        "Intel AN430TX"                ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(CDROM_MITSUMI  "Mitsumi CDROM"                ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(CYRIX_6X86     "Cyrix 6x86"                   ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(G100           "Matrox Productiva G100"       ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(GUSMAX         "Gravis UltraSound MAX"        ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(ISAMEM_RAMPAGE "AST Rampage"                  ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(ISAMEM_IAB     "Intel Above Board"            ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(ISAMEM_BRAT    "BocaRAM/AT"                   ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(LASERXT        "VTech Laser XT"               ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(OLIVETTI       "Olivetti M290"                ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(OPEN_AT        "OpenAT"                       ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(OPL4ML         "OPL4-ML daughterboard"        ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(PCL            "Generic PCL5e Printer"        ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(SIO_DETECT     "Super I/O Detection Helper"   ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(WACOM          "Wacom Input Devices"          ON    "DEV_BRANCH"  OFF)
+cmake_dependent_option(XL24           "ATI VGA Wonder XL24 (ATI-28800-6)" ON    "DEV_BRANCH"  OFF)
 
 # Ditto but for Qt
 if(QT)
@@ -205,11 +196,14 @@ endif()
 if(NOT CMAKE_PROJECT_VERSION_PATCH)
     set(CMAKE_PROJECT_VERSION_PATCH 0)
 endif()
+
 if(NOT EMU_BUILD_NUM)
     set(EMU_BUILD_NUM 0)
 endif()
+
 if(NOT EMU_COPYRIGHT_YEAR)
     set(EMU_COPYRIGHT_YEAR 2024)
 endif()
 
 add_subdirectory(src)
+
