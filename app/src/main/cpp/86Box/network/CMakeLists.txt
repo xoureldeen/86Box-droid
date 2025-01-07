@@ -36,8 +36,8 @@ list(APPEND net_sources
     utils/getline.c
 )
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SLIRP REQUIRED IMPORTED_TARGET slirp)
+find_package(PkgConfig QUIET)
+pkg_check_modules(SLIRP QUIET IMPORTED_TARGET slirp)
 target_link_libraries(86Box PkgConfig::SLIRP)
 
 if(WIN32)
